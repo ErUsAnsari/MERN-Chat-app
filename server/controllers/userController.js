@@ -45,4 +45,35 @@ export const signup = async (req, res) => {
 
 
 // Controller for login a user
-export const signin = async (req, res) => {}
+export const login = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        // finding the user
+        const userData = await User.findOne({ email })
+
+        // checking if user exists
+        if (!userData) {
+            return res.json({ success: false, message: "User Not found" })
+        }
+
+        // checking password is correct or not
+        const isPasswordCorrect = await bcrypt.compare(password, userData.password)
+        if (!isPasswordCorrect) {
+            return res.json({ success: false, message: "Invalid Credentials" })
+        }
+
+        // generating token for user login
+        const token = generateToken(userData._id);
+
+        res.json({
+            success: true,
+            userData,
+            token,
+            message: "Login Successfull"
+        })
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message })
+    }
+}
