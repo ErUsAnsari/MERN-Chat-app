@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
-import assets, { messagesDummyData } from "../assets/assets";
-import { formatMessageTime } from "../lib/utils";
+import assets, { messagesDummyData } from "../assets/assets.js";
+import { formatMessageTime } from "../lib/utils.js";
 
 const ChatContainer = ({ selectedUser, setSelectedUser }) => {
   const scrollEnd = useRef();

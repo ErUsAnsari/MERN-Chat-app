@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
-import assets from "../assets/assets";
+import assets from "../assets/assets.js";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext.jsx";
 
 const ProfilePage = () => {
   const { authUser, updateProfile } = useContext(AuthContext);
@@ -87,7 +87,9 @@ const ProfilePage = () => {
         <img
           src={authUser?.profilePic || assets.logo_icon}
           alt=""
-          className={`max-w-50 aspect-square rounded-full mx-10 max-sm:mt-10 ${selectedImage && "rounded-full"}`}
+          className={`max-w-44 aspect-square rounded-full mx-10 max-sm:mt-10 ${
+            selectedImage && "rounded-full"
+          }`}
         />
       </div>
     </div>
