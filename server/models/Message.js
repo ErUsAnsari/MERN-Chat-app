@@ -12,10 +12,10 @@ export const messageSchema = new mongoose.Schema({
         require: true
     },
     text: {
-        type: string
+        type: String
     },
     image: {
-        type: string
+        type: String
     },
     seen: {
         type: Boolean,
