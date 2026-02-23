@@ -1,8 +1,11 @@
-import React from "react";
-import assets, { userDummyData } from "../assets/assets";
+import React, { useContext } from "react";
+import assets, { userDummyData } from "../assets/assets.js";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext.jsx";
 
 const Sidebar = ({ selectedUser, setSelectedUser }) => {
+  const { logout } = useContext(AuthContext);
+
   const navigate = useNavigate();
   return (
     <div
