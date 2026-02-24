@@ -21,10 +21,10 @@ export const getUsersForSidebar = async (req, res) => {
 
         await Promise.all(promises);
 
-        res.json({ success: true, users: filteredUsers, unseenMessages })
+        res.status(200).json({ success: true, users: filteredUsers, unseenMessages })
     } catch (error) {
         console.log(error.message);
-        res.json({ success: false, message: error.message })
+        res.status(500).json({ success: false, message: error.message })
     }
 }
 
@@ -44,10 +44,10 @@ export const getMessages = async (req, res) => {
 
         await Message.updateMany({ senderId: selectedUserId, receiverId: myId }, { seen: true })
 
-        res.json({ success: true, messages })
+        res.status(200).json({ success: true, messages })
     } catch (error) {
         console.log(error.message);
-        res.json({ success: false, message: error.message })
+        res.status(500).json({ success: false, message: error.message })
     }
 }
 
@@ -57,10 +57,10 @@ export const markMessageAsSeen = async (req, res) => {
     const { id } = req.params;
     try {
         await Message.findByIdAndUpdate(id, { seen: true })
-        res.json({ success: true })
+        res.status(200).json({ success: true })
     } catch (error) {
         console.log(error.message);
-        res.json({ success: false, message: error.message })
+        res.status(500).json({ success: false, message: error.message })
     }
 }
 
@@ -92,9 +92,9 @@ export const sendMessage = async (req, res) => {
             io.to(receiverSocketId).emit("newMessage", newMessage)
         }
 
-        res.json({ success: true, newMessage })
+        res.status(201).json({ success: true, newMessage })
     } catch (error) {
         console.log(error.message);
-        res.json({ success: false, message: error.message })
+        res.status(500).json({ success: false, message: error.message })
     }
 }

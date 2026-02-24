@@ -12,13 +12,13 @@ export const protectRoute = async (req, res, next) => {
         const user = await User.findById(decodedToken.userId).select('-password')
 
         if (!user) {
-            return res.json({ success: false, message: "User Not found" })
+            return res.status(404).json({ success: false, message: "User Not found" })
         }
 
         req.user = user;
         next();
     } catch (error) {
         console.log(error.message);
-        res.json({ success: false, message: error.message });
+        res.status(500).json({ success: false, message: error.message });
     }
 }

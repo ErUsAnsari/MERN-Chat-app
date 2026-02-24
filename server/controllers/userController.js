@@ -11,13 +11,13 @@ export const signup = async (req, res) => {
     try {
         // checking any details missing or not
         if (!fullName || !email || !password || !bio) {
-            return res.json({ success: false, message: "Missing Details" })
+            return res.status(400).json({ success: false, message: "Missing Details" })
         }
 
         // Checking if user already exists
         const user = await User.findOne({ email })
         if (user) {
-            return res.json({ success: false, message: "User Already Exists" })
+            return res.status(400).json({ success: false, message: "User Already Exists" })
         }
 
         // Generating hashed password
@@ -32,7 +32,7 @@ export const signup = async (req, res) => {
         // generating token for authentication
         const token = generateToken(newUser._id);
 
-        res.json({
+        res.status(201).json({
             success: true,
             userData: newUser,
             token,
@@ -40,7 +40,7 @@ export const signup = async (req, res) => {
         })
     } catch (error) {
         console.log(error);
-        res.json({ success: false, message: error.message })
+        res.status(500).json({ success: false, message: error.message })
     }
 }
 
@@ -55,19 +55,19 @@ export const login = async (req, res) => {
 
         // checking if user exists
         if (!userData) {
-            return res.json({ success: false, message: "User Not found" })
+            return res.status(404).json({ success: false, message: "User Not found" })
         }
 
         // checking password is correct or not
         const isPasswordCorrect = await bcrypt.compare(password, userData.password)
         if (!isPasswordCorrect) {
-            return res.json({ success: false, message: "Invalid Credentials" })
+            return res.status(400).json({ success: false, message: "Invalid Credentials" })
         }
 
         // generating token for user login
         const token = generateToken(userData._id);
 
-        res.json({
+        res.status(200).json({
             success: true,
             userData,
             token,
@@ -75,14 +75,14 @@ export const login = async (req, res) => {
         })
     } catch (error) {
         console.log(error);
-        res.json({ success: false, message: error.message })
+        res.status(500).json({ success: false, message: error.message })
     }
 }
 
 
 // Controller to check if user is Authenticated or not
 export const checkAuth = (req, res) => {
-    res.json({ success: true, user: req.user })
+    res.status(200).json({ success: true, user: req.user })
 }
 
 
@@ -96,16 +96,24 @@ export const updateProfile = async (req, res) => {
         let updatedUser;
 
         if (!profilePic) {
-            updatedUser = await User.findByIdAndUpdate(userId, { fullName, bio }, { new: true })
+            updatedUser = await User.findByIdAndUpdate(
+                userId,
+                { fullName, bio },
+                { returnDocument: 'after' }
+            )
         } else {
             const upload = await cloudinary.uploader.upload(profilePic)
 
-            updatedUser = await User.findByIdAndUpdate(userId, { profilePic: upload.secure_url, fullName, bio }, { new: true })
+            updatedUser = await User.findByIdAndUpdate(
+                userId,
+                { profilePic: upload.secure_url, fullName, bio },
+                { returnDocument: 'after' }
+            )
         }
 
-        res.json({ success: true, user: updatedUser })
+        res.status(200).json({ success: true, user: updatedUser })
     } catch (error) {
         console.log(error);
-        res.json({ success: false, message: error.message })
+        res.status(500).json({ success: false, message: error.message })
     }
 }
