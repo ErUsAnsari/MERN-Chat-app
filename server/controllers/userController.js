@@ -11,13 +11,17 @@ export const signup = async (req, res) => {
     try {
         // checking any details missing or not
         if (!fullName || !email || !password || !bio) {
-            return res.status(400).json({ success: false, message: "Missing Details" })
+            return res
+                .status(400)
+                .json({ success: false, message: "Missing Details" })
         }
 
         // Checking if user already exists
         const user = await User.findOne({ email })
         if (user) {
-            return res.status(400).json({ success: false, message: "User Already Exists" })
+            return res
+                .status(400)
+                .json({ success: false, message: "User Already Exists" })
         }
 
         // Generating hashed password
@@ -55,13 +59,17 @@ export const login = async (req, res) => {
 
         // checking if user exists
         if (!userData) {
-            return res.status(404).json({ success: false, message: "User Not found" })
+            return res
+                .status(404)
+                .json({ success: false, message: "User Not found" })
         }
 
         // checking password is correct or not
         const isPasswordCorrect = await bcrypt.compare(password, userData.password)
         if (!isPasswordCorrect) {
-            return res.status(400).json({ success: false, message: "Invalid Credentials" })
+            return res
+                .status(400)
+                .json({ success: false, message: "Invalid Credentials" })
         }
 
         // generating token for user login

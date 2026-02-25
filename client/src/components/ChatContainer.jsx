@@ -26,6 +26,7 @@ const ChatContainer = ({ selectedUser, setSelectedUser }) => {
         />
         <img src={assets.help_icon} alt="" className="max-md:hidden max-w-5" />
       </div>
+
       {/* ---------- Chat area ----------- */}
       <div className="flex flex-col h-[calc(100%-120px)] overflow-y-scroll p-3 pb-6 ">
         {messagesDummyData.map((message, index) => (
@@ -71,6 +72,7 @@ const ChatContainer = ({ selectedUser, setSelectedUser }) => {
         ))}
         <div ref={scrollEnd}></div>
       </div>
+
       {/* ---------- Bottom area ---------- */}
       <div className="absolute bottom-0 left-0 right-0 flex items-center gap-3 p-3">
         <div className="flex-1 flex items-center bg-gray-100/12 px-3 rounded-full">
