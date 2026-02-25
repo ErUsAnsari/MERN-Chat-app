@@ -1,12 +1,36 @@
-import React, { useContext } from "react";
-import assets, { userDummyData } from "../assets/assets.js";
+import React, { useContext, useEffect } from "react";
+import assets from "../assets/assets.js";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext.jsx";
+import { ChatContext } from "../../context/ChatContext.jsx";
+import { useState } from "react";
 
-const Sidebar = ({ selectedUser, setSelectedUser }) => {
-  const { logout } = useContext(AuthContext);
+const Sidebar = () => {
+  const {
+    getUsers,
+    users,
+    selectedUser,
+    setSelectedUser,
+    unseenMessages,
+    setUnseenMessages,
+  } = useContext(ChatContext);
+
+  const { logout, onlineUsers } = useContext(AuthContext);
+
+  const [input, setInput] = useState(false);
 
   const navigate = useNavigate();
+
+  const filteredUsers = input
+    ? users.filter((user) =>
+        user.fullName.toLowerCase().includes(input.toLowerCase()),
+      )
+    : users;
+
+  useEffect(() => {
+    getUsers();
+  }, [onlineUsers]);
+
   return (
     <div
       className={`backdrop-blur-xl border shadow-2xl bg-[#F8FAFC] border-r border-solid border-[#E2E8F0]  h-full p-5 rounded-r-xl overflow-y-scroll text-[#0F172A] ${
@@ -51,7 +75,7 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
       </div>
 
       <div className="flex flex-col">
-        {userDummyData.map((user, index) => (
+        {filteredUsers.map((user, index) => (
           <div
             onClick={() => setSelectedUser(user)}
             key={index}
@@ -66,15 +90,15 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
             />
             <div className="flex flex-col leading-5">
               <p>{user.fullName}</p>
-              {index < 3 ? (
+              {onlineUsers.includes(user._id) ? (
                 <span className="text-[#22C55E] text-xs">Online</span>
               ) : (
                 <span className="text-[#94A3B8] text-xs">Offline</span>
               )}
             </div>
-            {index > 2 && (
+            {unseenMessages[user._id] > 0 && (
               <p className="bg-linear-to-tr from-blue-600 to-blue-400 text-[10px] h-5 w-5 flex items-center justify-center rounded-full text-white font-bold absolute top-4 right-4 text-xs bg-[#2563EB]">
-                {index}
+                {unseenMessages[user._id]}
               </p>
             )}
           </div>

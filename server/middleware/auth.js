@@ -9,10 +9,12 @@ export const protectRoute = async (req, res, next) => {
 
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
 
-        const user = await User.findById(decodedToken.userId).select('-password')
+        const user = await User.findById(decodedToken.id).select('-password')
 
         if (!user) {
-            return res.status(404).json({ success: false, message: "User Not found" })
+            return res
+                .status(404)
+                .json({ success: false, message: "User Not found" })
         }
 
         req.user = user;
