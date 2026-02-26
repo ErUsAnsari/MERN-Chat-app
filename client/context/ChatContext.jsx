@@ -45,7 +45,7 @@ export const ChatProvider = ({ children }) => {
         messageData,
       );
       if (data.success) {
-        setMessages((prevMessages) => [...prevMessages, data.messages]);
+        setMessages((prevMessages) => [...prevMessages, data.newMessage]);
       } else {
         toast.error(data.message);
       }

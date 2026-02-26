@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import assets, { messagesDummyData } from "../assets/assets.js";
+import assets from "../assets/assets.js";
 import { formatMessageTime } from "../lib/utils.js";
 import { ChatContext } from "../../context/ChatContext.jsx";
 import { AuthContext } from "../../context/AuthContext.jsx";
@@ -19,8 +19,12 @@ const ChatContainer = () => {
     event.preventDefault();
     if (input.trim() === "") return null;
 
-    await sendMessage({ text: input.trim() });
-    setInput("");
+    try {
+     await sendMessage({ text: input.trim() });
+    setInput(""); 
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // Handle sending Image

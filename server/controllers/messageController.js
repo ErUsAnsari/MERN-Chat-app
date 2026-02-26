@@ -67,13 +67,12 @@ export const markMessageAsSeen = async (req, res) => {
 
 // Send message to selected user
 export const sendMessage = async (req, res) => {
-    const { text, image } = req.body;
-    const receiverId = req.params.id;
-    const senderId = req.user._id;
-
-    let imageUrl;
-
     try {
+        const { text, image } = req.body;
+        const receiverId = req.params.id;
+        const senderId = req.user._id;
+
+        let imageUrl;
         if (image) {
             const uploadResponse = await cloudinary.uploader.upload(image);
             imageUrl = uploadResponse.secure_url
