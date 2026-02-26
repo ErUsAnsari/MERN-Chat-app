@@ -1,5 +1,5 @@
 import React from "react";
-import assets, { imagesDummyData } from "../assets/assets.js";
+import assets from "../assets/assets.js";
 import { useContext } from "react";
 import { ChatContext } from "../../context/ChatContext.jsx";
 import { AuthContext } from "../../context/AuthContext.jsx";
@@ -8,8 +8,9 @@ import { useEffect } from "react";
 
 const RightSidebar = () => {
   const { selectedUser, messages } = useContext(ChatContext);
-  const { logout, onlineUsers } = useContext(AuthContext);
+  const { logout, onlineUsers, authUser } = useContext(AuthContext);
   const [messageImages, setMessageImages] = useState([]);
+  const isOwnProfile = selectedUser?._id === authUser?._id;
 
   // Get all images from messages and set them to state
   useEffect(() => {
@@ -56,12 +57,14 @@ const RightSidebar = () => {
             ))}
           </div>
         </div>
-        <button
-          onClick={() => logout()}
-          className="absolute bottom-5 left-1/2 transform -translate-x-1/2 bg-linear-to-r from-blue-400 to-blue-600 text-white border-none text-sm font-light py-2 px-20 rounded-full cursor-pointer"
-        >
-          Logout
-        </button>
+        {isOwnProfile && (
+          <button
+            onClick={() => logout()}
+            className="absolute bottom-5 left-1/2 transform -translate-x-1/2 bg-linear-to-r from-blue-400 to-blue-600 text-white border-none text-sm font-light py-2 px-20 rounded-full cursor-pointer"
+          >
+            Logout
+          </button>
+        )}
       </div>
     )
   );

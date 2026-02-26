@@ -24,7 +24,9 @@ export const AuthProvider = ({ children }) => {
         connectSocket(data.user);
       }
     } catch (error) {
-      toast.error(error.message);
+      if (error.response?.status !== 401) {
+        toast.error(error.message);
+      }
     }
   };
 
@@ -90,12 +92,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (token) {
-      axios.defaults.headers.common["token"] = token;
-    }
-
+    if (!token) return;
+    axios.defaults.headers.common["token"] = token;
     checkAuth();
-  }, []);
+  }, [token]);
 
   const value = {
     axios,
