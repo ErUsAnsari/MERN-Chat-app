@@ -12,9 +12,21 @@ import { Server } from 'socket.io';
 const app = express();
 const server = http.createServer(app);
 
+const CLIENT_URL = process.env.CLIENT_URL;
+
+// Middleware setup
+app.use(express.json({ limit: '4mb' }));
+app.use(cors({
+    origin: CLIENT_URL,
+    credentials: true,
+}));
+
 // Initialize socket.io server
 export const io = new Server(server, {
-    cors: { origin: "*" }
+    cors: {
+        origin: CLIENT_URL,
+        credentials: true,
+    }
 })
 
 // store online users
@@ -38,9 +50,6 @@ io.on('connection', (socket) => {
     })
 })
 
-// Middleware setup
-app.use(express.json({ limit: '4mb' }));
-app.use(cors());
 
 // Routes Setup
 app.use('/api/status', (req, res) => res.send('Server is live'));
