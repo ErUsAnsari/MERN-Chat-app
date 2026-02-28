@@ -68,7 +68,7 @@ Real-time communication is handled using Socket.io, enabling instant bi-directio
 
 - ⚡ Optimized Development Workflow with Nodemon
 
-- 🛡️ CORS-enabled secure cross-origin communication
+- 🛡️ CORS-enabled secure cross-origin communication (Vercel ↔ Render)
 
 ---
 
@@ -114,15 +114,15 @@ Real-time communication is handled using Socket.io, enabling instant bi-directio
 ## ⚙️ Architecture Overview
 
 ```bash
-Client (React + Vite)
+Client (Vercel - React + Vite)
         ↕
 REST APIs (Axios)
         ↕
-Express Server (Node.js)
+Backend (Render - Node.js + Express + Socket.io)
         ↕
-MongoDB Database
+MongoDB Atlas
         ↕
-Socket.io Server (Real-time Layer)
+Cloudinary (Media CDN)
 ```
 
 ### Authentication Flow:
@@ -159,7 +159,7 @@ Socket.io Server (Real-time Layer)
 
 - Secure file uploads via Cloudinary
 
-- CORS configuration for safe API access    
+- Cross-origin CORS configuration (Vercel ↔ Render)    
 
 ---
 
@@ -244,19 +244,34 @@ npm run dev
 
 ---
 
-## 🌍 Live Deployment
+## 🌍 Production Deployment
 
-The application is fully deployed on Vercel, with environment-based configuration for secure production usage.
+The application is deployed using a split production architecture :
 
-**Deployment Highlights** :
+**🚀 Frontend**
 
-- Frontend served via Vercel
+- Hosted on Vercel
 
-- Environment variables securely configured
+- Optimized static & dynamic React (Vite) build
 
-- Production-ready MongoDB Atlas integration
+- Environment-based API configuration
 
-- Real-time messaging optimized for cloud deployment
+**🧠 Backend**
+
+- Deployed on Render
+
+- Persistent Node.js + Express server
+
+- Real-time WebSocket handling via Socket.io
+
+- Secure CORS configuration for cross-origin communication
+
+**🗄️ Database & Media**
+
+- MongoDB Atlas (cloud database)
+
+- Cloudinary CDN for media storage and optimization
+
 
 Live Demo :
 
